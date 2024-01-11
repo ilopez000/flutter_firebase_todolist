@@ -25,3 +25,5 @@ title: (string)
 4.-Desde Descripción General de firebase +Agregar app y hacer clic sobre el icono de Flutter.
 
 5.-Descargar Node.js y nvm para windows desde: https://github.com/coreybutler/nvm-windows/releases
+
+6.-Desde la CMD de Windows ejecutar: npm install -g firebase-tools (firebase ya tendría que ser un comando que se pueda usar desde cualquier parte)
