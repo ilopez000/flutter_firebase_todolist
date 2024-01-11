@@ -29,3 +29,5 @@ title: (string)
 6.-Desde la CMD de Windows ejecutar: npm install -g firebase-tools (firebase ya tendría que ser un comando que se pueda usar desde cualquier parte)
 
 7.- ejecutar firebase login desde CMD de Windows y hacemos log in en la cuenta de Google.
+
+8.- Desde el CMD ejecutar: dart pub global activate flutterfire_cli
