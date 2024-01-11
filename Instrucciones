@@ -14,7 +14,7 @@ service cloud.firestore {
   }
 }
 
-3.Crar la Colección y el Documento "todos" en Firestore Database con los siguientes campos:
+3.-Crear la Colección y el Documento "todos" en Firestore Database con los siguientes campos:
 
 UID de usuario: (string)
 completed: (booleano)
@@ -22,3 +22,6 @@ description: (string)
 id: (número)
 title: (string)
 
+4.-Desde Descripción General de firebase +Agregar app y hacer clic sobre el icono de Flutter.
+
+5.-Descargar Node.js y nvm para windows desde: https://github.com/coreybutler/nvm-windows/releases
