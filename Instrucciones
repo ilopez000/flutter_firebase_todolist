@@ -1,0 +1,14 @@
+1.-Crear un nuevo proyecto en Flutter desde Android Studio
+2.-En FireBase dar de alta un nuevo proyecto y habilitar los servicios:
+-Authentication y habilitar el método de usario/contraseña
+-Firestore Database y sustituís las reglas que viene por defecto por:
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Reglas para la colección 'todos'
+    match /todos/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data['UID de usuario'];
+    }
+  }
+}
