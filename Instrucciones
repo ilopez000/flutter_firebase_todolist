@@ -34,4 +34,4 @@ title: (string)
 
 9.-Descargar e instalar flutterfire_cli desde: https://pub.dev/packages/flutterfire_cli/versions
 
-10.- Desde la raiz del directorio de Flutter ejecutar: flutterfire configure --project=listatareas-54be5
+10.- Desde la raiz del directorio de Flutter ejecutar: flutterfire configure 
