@@ -30,6 +30,8 @@ title: (string)
 
 7.- ejecutar firebase login desde CMD de Windows y hacemos log in en la cuenta de Google.
 
-8.- Desde el CMD ejecutar: dart pub global activate flutterfire_cli
+8.-Descargar e instalar flutterfire_cli desde: https://pub.dev/packages/flutterfire_cli/versions
+
+9.- Desde el CMD ejecutar: dart pub global activate flutterfire_cli
 
 9.- Desde la raiz del directorio de Flutter ejecutar: flutterfire configure --project=listatareas-54be5
