@@ -61,6 +61,28 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  Future<void> _signUpWithEmail() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (userCredential.user != null) {
+        Navigator.pushReplacementNamed(context, '/todos');
+      }
+    } on FirebaseAuthException catch (error) {
+      _showErrorDialog(error.message ?? 'An error occurred');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -108,12 +130,17 @@ class _AuthScreenState extends State<AuthScreen> {
                 onPressed: _signInWithEmail,
                 child: Text('Login'),
               ),
+              ElevatedButton(
+                onPressed: _signUpWithEmail,
+                child: Text('Register'),
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
 
   @override
   void dispose() {
@@ -152,13 +179,56 @@ class _TodosScreenState extends State<TodosScreen> {
     }
   }
 
+  void _addTodo(String title) {
+    if (currentUser != null) {
+      _firestore.collection('todos').add({
+        'title': title,
+        'UID de usuario': currentUser!.uid,
+      });
+    }
+  }
+
+  void _showAddTodoDialog(BuildContext context) {
+    final TextEditingController _newTodoController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Add New Todo'),
+        content: TextField(
+          controller: _newTodoController,
+          decoration: InputDecoration(labelText: 'Title'),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+          TextButton(
+            child: Text('Add'),
+            onPressed: () {
+              if (_newTodoController.text.isNotEmpty) {
+                _addTodo(_newTodoController.text);
+                Navigator.of(ctx).pop();
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('To-Do List'),
       ),
-      body: currentUser == null ? Center(child: Text('No user logged in')) : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+      body: currentUser == null
+          ? Center(child: Text('No user logged in'))
+          : StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: _firestore.collection('todos')
             .where('UID de usuario', isEqualTo: currentUser!.uid)
             .snapshots(),
@@ -174,7 +244,7 @@ class _TodosScreenState extends State<TodosScreen> {
                   title: Text(todo['title'] ?? 'Untitled'),
                   trailing: IconButton(
                     onPressed: () {
-                      print('Delete todo: ${todo['title']}');
+                      // Aquí podrías agregar una lógica adicional para confirmar antes de eliminar
                       _firestore.collection('todos').doc(todo['id'].toString()).delete();
                     },
                     icon: Icon(Icons.delete),
@@ -182,10 +252,16 @@ class _TodosScreenState extends State<TodosScreen> {
                 );
               },
             );
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error fetching data'));
           } else {
             return Center(child: CircularProgressIndicator());
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddTodoDialog(context),
+        child: Icon(Icons.add),
       ),
     );
   }
